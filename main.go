@@ -11,7 +11,8 @@ import (
 // Markdown is send message parse mode
 const Markdown = tgbotapi.ModeMarkdown
 
-var c = &CityName{}
+var cityName = &CityName{}
+var weatherInfo = &WeatherInfo{}
 
 func main() {
 	token, err := ReadBotToken("./token.json")
@@ -61,11 +62,17 @@ func main() {
 			bot.Send(response)
 		case "/where":
 			city := strings.Fields(update.Message.Text)
-			c.Name = city[1]
+			cityName.Name = city[1]
 
-			weatherAPIURL := BuildURL(*c)
-			weatherInfo := QueryWeather(weatherAPIURL)
-			responseMessage := ResponseWeatherText(weatherInfo)
+			weatherAPIURL := BuildURL(*cityName)
+			body, err := HttpGet(weatherAPIURL)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			weatherInfo.HandleQueryResult(body)
+			responseMessage := weatherInfo.ResponseWeatherText(weatherInfo)
 
 			response := tgbotapi.NewMessage(update.Message.Chat.ID, responseMessage)
 			response.ParseMode = Markdown
@@ -85,9 +92,15 @@ func main() {
 		default:
 			if update.Message.Location != nil {
 				weatherAPIURL := BuildURL(*update.Message.Location)
-				weatherInfo := QueryWeather(weatherAPIURL)
+				body, err := HttpGet(weatherAPIURL)
 
-				responseMessage := ResponseWeatherText(weatherInfo)
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				weatherInfo.HandleQueryResult(body)
+				responseMessage := weatherInfo.ResponseWeatherText(weatherInfo)
+
 				response := tgbotapi.NewMessage(update.Message.Chat.ID, responseMessage)
 				response.ParseMode = Markdown
 

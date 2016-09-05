@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -74,11 +73,11 @@ func BuildURL(param interface{}) (urlParsed string) {
 	return urlParsed
 }
 
-func QueryWeather(weatherURL string) (info *WeatherInfo) {
+func HttpGet(weatherURL string) ([]byte, error) {
 	response, err := http.Get(weatherURL)
 
 	if err != nil {
-		log.Fatal("Connect Error")
+		return nil, err
 	}
 
 	defer response.Body.Close()
@@ -86,10 +85,18 @@ func QueryWeather(weatherURL string) (info *WeatherInfo) {
 	body, err := ioutil.ReadAll(response.Body)
 
 	if err != nil {
-		log.Fatal("Can't not read weather information.")
+		return nil, err
 	}
 
+	return body, nil
+}
+
+func (w *WeatherInfo) HandleQueryResult(body []byte) error {
 	json, err := simplejson.NewJson(body)
+
+	if err != nil {
+		return err
+	}
 
 	city, _ := json.Get("query").Get("results").Get("channel").Get("location").Get("city").String()
 	tempture, _ := json.Get("query").Get("results").Get("channel").Get("item").Get("condition").Get("temp").String()
@@ -102,32 +109,31 @@ func QueryWeather(weatherURL string) (info *WeatherInfo) {
 	link, _ := json.Get("query").Get("results").Get("channel").Get("link").String()
 
 	if _, err := strconv.ParseFloat(direction, 64); err != nil {
-		log.Fatal(err)
+		return err
 	}
+
 	if _, err := strconv.Atoi(status); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	windDirection, _ := strconv.ParseFloat(direction, 64)
 	emojiStatusCode, _ := strconv.Atoi(status)
 
-	info = &WeatherInfo{
-		city,
-		time.Now().Format("2006-01-02 15:04:05"),
-		tempture,
-		humidity,
-		emojiStatusCode,
-		windSpeed,
-		windDirection,
-		sunrise,
-		sunset,
-		link,
-	}
+	w.City = city
+	w.Time = time.Now().Format("2006-01-02 15:04:05")
+	w.Tempture = tempture
+	w.Humidity = humidity
+	w.Status = emojiStatusCode
+	w.WindSpeed = windSpeed
+	w.WindDirection = windDirection
+	w.Sunrise = sunrise
+	w.Sunset = sunset
+	w.Link = link
 
-	return
+	return nil
 }
 
-func ResponseWeatherText(weatherInfo *WeatherInfo) string {
+func (w *WeatherInfo) ResponseWeatherText(weatherInfo *WeatherInfo) string {
 	emoji, _ := weatherEmoji(weatherInfo.Status)
 	weatherMessage := `🚩 *` + weatherInfo.City + `*
 - - - - - - - - - - - - - - - - - - - - - -

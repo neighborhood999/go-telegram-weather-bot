@@ -1,3 +1,5 @@
 # Telegram Weather Bot (Go)
 
-### WIP
+![](./telegramBot-written-in-Go.png)
+
+## WIP

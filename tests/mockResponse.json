@@ -1,0 +1,149 @@
+{
+ "query": {
+  "count": 1,
+  "created": "2016-09-05T02:51:39Z",
+  "lang": "en-US",
+  "results": {
+   "channel": {
+    "units": {
+     "distance": "mi",
+     "pressure": "in",
+     "speed": "mph",
+     "temperature": "F"
+    },
+    "title": "Yahoo! Weather - Taipei City, Taipei City, TW",
+    "link": "http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2306179/",
+    "description": "Yahoo! Weather for Taipei City, Taipei City, TW",
+    "language": "en-us",
+    "lastBuildDate": "Mon, 05 Sep 2016 10:51 AM CST",
+    "ttl": "60",
+    "location": {
+     "city": "Taipei City",
+     "country": "Taiwan",
+     "region": " Taipei City"
+    },
+    "wind": {
+     "chill": "84",
+     "direction": "90",
+     "speed": "14"
+    },
+    "atmosphere": {
+     "humidity": "77",
+     "pressure": "986.0",
+     "rising": "0",
+     "visibility": "16.1"
+    },
+    "astronomy": {
+     "sunrise": "5:36 am",
+     "sunset": "6:7 pm"
+    },
+    "image": {
+     "title": "Yahoo! Weather",
+     "width": "142",
+     "height": "18",
+     "link": "http://weather.yahoo.com",
+     "url": "http://l.yimg.com/a/i/brand/purplelogo//uh/us/news-wea.gif"
+    },
+    "item": {
+     "title": "Conditions for Taipei City, Taipei City, TW at 09:00 AM CST",
+     "lat": "25.086",
+     "long": "121.560997",
+     "link": "http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2306179/",
+     "pubDate": "Mon, 05 Sep 2016 09:00 AM CST",
+     "condition": {
+      "code": "47",
+      "date": "Mon, 05 Sep 2016 09:00 AM CST",
+      "temp": "84",
+      "text": "Scattered Thunderstorms"
+     },
+     "forecast": [
+      {
+       "code": "47",
+       "date": "05 Sep 2016",
+       "day": "Mon",
+       "high": "85",
+       "low": "76",
+       "text": "Scattered Thunderstorms"
+      },
+      {
+       "code": "4",
+       "date": "06 Sep 2016",
+       "day": "Tue",
+       "high": "81",
+       "low": "76",
+       "text": "Thunderstorms"
+      },
+      {
+       "code": "47",
+       "date": "07 Sep 2016",
+       "day": "Wed",
+       "high": "82",
+       "low": "76",
+       "text": "Scattered Thunderstorms"
+      },
+      {
+       "code": "47",
+       "date": "08 Sep 2016",
+       "day": "Thu",
+       "high": "80",
+       "low": "75",
+       "text": "Scattered Thunderstorms"
+      },
+      {
+       "code": "11",
+       "date": "09 Sep 2016",
+       "day": "Fri",
+       "high": "79",
+       "low": "75",
+       "text": "Showers"
+      },
+      {
+       "code": "39",
+       "date": "10 Sep 2016",
+       "day": "Sat",
+       "high": "82",
+       "low": "75",
+       "text": "Scattered Showers"
+      },
+      {
+       "code": "11",
+       "date": "11 Sep 2016",
+       "day": "Sun",
+       "high": "78",
+       "low": "75",
+       "text": "Showers"
+      },
+      {
+       "code": "26",
+       "date": "12 Sep 2016",
+       "day": "Mon",
+       "high": "79",
+       "low": "75",
+       "text": "Cloudy"
+      },
+      {
+       "code": "28",
+       "date": "13 Sep 2016",
+       "day": "Tue",
+       "high": "79",
+       "low": "76",
+       "text": "Mostly Cloudy"
+      },
+      {
+       "code": "47",
+       "date": "14 Sep 2016",
+       "day": "Wed",
+       "high": "81",
+       "low": "77",
+       "text": "Scattered Thunderstorms"
+      }
+     ],
+     "description": "<![CDATA[<img src=\"http://l.yimg.com/a/i/us/we/52/47.gif\"/>\n<BR />\n<b>Current Conditions:</b>\n<BR />Scattered Thunderstorms\n<BR />\n<BR />\n<b>Forecast:</b>\n<BR /> Mon - Scattered Thunderstorms. High: 85Low: 76\n<BR /> Tue - Thunderstorms. High: 81Low: 76\n<BR /> Wed - Scattered Thunderstorms. High: 82Low: 76\n<BR /> Thu - Scattered Thunderstorms. High: 80Low: 75\n<BR /> Fri - Showers. High: 79Low: 75\n<BR />\n<BR />\n<a href=\"http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2306179/\">Full Forecast at Yahoo! Weather</a>\n<BR />\n<BR />\n(provided by <a href=\"http://www.weather.com\" >The Weather Channel</a>)\n<BR />\n]]>",
+     "guid": {
+      "isPermaLink": "false"
+     }
+    }
+   }
+  }
+ }
+}

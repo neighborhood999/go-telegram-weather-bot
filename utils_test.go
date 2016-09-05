@@ -1,6 +1,9 @@
 package main
 
 import (
+	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
 	"reflect"
 	"testing"
 	"time"
@@ -17,7 +20,7 @@ func TestReadBotToken(t *testing.T) {
 		t.Fail()
 	}
 
-	if _, err := ReadBotToken("./testToken.json"); err != nil {
+	if _, err := ReadBotToken("./tests/testToken.json"); err != nil {
 		t.Log(err)
 	}
 
@@ -50,7 +53,62 @@ func TestBuildURL(t *testing.T) {
 	}
 }
 
+func TestHttpGet(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello Go"))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	}))
+
+	defer ts.Close()
+
+	if _, err := HttpGet(ts.URL); err != nil {
+		t.Log(err)
+	}
+
+	if _, err := HttpGet(""); err != nil {
+		t.Log(err)
+	}
+}
+
+func TestHandlyeQueryResult(t *testing.T) {
+	json, err := ioutil.ReadFile("./tests/mockResponse.json")
+
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
+
+	w := new(WeatherInfo)
+	w.HandleQueryResult(json)
+
+	if w.City != "Taipei City" {
+		t.Log(w.City)
+		t.Fail()
+	}
+
+	txt, err := ioutil.ReadFile("./tests/hello.txt")
+
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
+	if handleError := w.HandleQueryResult(txt); handleError != nil {
+		t.Log(handleError)
+	}
+
+	invalidJSON, err := ioutil.ReadFile("./tests/testToken.json")
+
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
+	if JSONError := w.HandleQueryResult(invalidJSON); JSONError != nil {
+		t.Log(JSONError)
+	}
+}
+
 func TestResponseWeatherText(t *testing.T) {
+	w := new(WeatherInfo)
 	fakeInfo := &WeatherInfo{
 		"Taipei, Taiwan",
 		time.Now().Format("2006/01/02 15:04:05"),
@@ -64,7 +122,7 @@ func TestResponseWeatherText(t *testing.T) {
 		"http://goweatherbot.example.com",
 	}
 
-	result := ResponseWeatherText(fakeInfo)
+	result := w.ResponseWeatherText(fakeInfo)
 
 	if reflect.TypeOf(result).Kind() != reflect.String {
 		t.Log("Response Fail")
