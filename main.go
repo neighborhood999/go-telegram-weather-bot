@@ -65,7 +65,7 @@ func main() {
 			cityName.Name = city[1]
 
 			weatherAPIURL := BuildURL(*cityName)
-			body, err := HttpGet(weatherAPIURL)
+			body, err := HTTPGet(weatherAPIURL)
 
 			if err != nil {
 				log.Fatal(err)
@@ -92,7 +92,7 @@ func main() {
 		default:
 			if update.Message.Location != nil {
 				weatherAPIURL := BuildURL(*update.Message.Location)
-				body, err := HttpGet(weatherAPIURL)
+				body, err := HTTPGet(weatherAPIURL)
 
 				if err != nil {
 					log.Fatal(err)

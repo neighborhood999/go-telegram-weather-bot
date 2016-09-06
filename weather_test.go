@@ -36,7 +36,7 @@ func TestCompass(t *testing.T) {
 		t.Fail()
 	}
 
-	var degree float64 = 0
+	var degree float64
 	for i := 0; i < len(sortedKeys); i++ {
 		if sortedKeys[i] != degree {
 			t.Fail()

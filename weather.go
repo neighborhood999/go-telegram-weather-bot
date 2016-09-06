@@ -5,6 +5,59 @@ import (
 	"sort"
 )
 
+const (
+	tornado                 = "🌪"
+	tropicalStorm           = "💨"
+	hurricane               = "💨"
+	severeThunderstorms     = "⛈"
+	thunderstorms           = "⛈"
+	mixedRainAndSnow        = "🌨"
+	mixedRainAndSleet       = "🌧"
+	mixedSnowAndSleet       = "🌨"
+	freezingDrizzle         = "🌧"
+	drizzle                 = "🌧"
+	freezingRain            = "🌧"
+	showers                 = "🌧"
+	showerss                = "🌧"
+	snowFlurries            = "🌨"
+	lightSnowShowers        = "🌨"
+	blowingSnow             = "🌨"
+	snow                    = "🌨"
+	hail                    = "🌨"
+	sleet                   = "🌧"
+	dust                    = "🌫"
+	foggy                   = "🌫"
+	haze                    = "🌫"
+	smoky                   = "🌫"
+	blustery                = "💨"
+	windy                   = "💨"
+	cody                    = "❄️"
+	cloudy                  = "☁️"
+	mostlyCloudyNight       = "☁️"
+	mostlyCloudyDay         = "🌥"
+	partlyCloudyNight       = "☁️"
+	partlyCloudyDay         = "⛅️"
+	clearNight              = "🌙"
+	sunny                   = "☀️"
+	fairNight               = "🌙"
+	fairDay                 = "🌤"
+	mixedRainAndHail        = "🌧"
+	hot                     = "☀️"
+	isolatedThunderstorms   = "⛈"
+	scatteredThunderstorms  = "⛈"
+	scatteredThunderstormss = "⛈"
+	scatteredShowers        = "🌧"
+	heavySnow               = "🌨"
+	scatteredSnowShowers    = "🌨"
+	heavySnows              = "🌨"
+	partlyCloudy            = "⛅️"
+	thundershowers          = "⛈"
+	snowShowers             = "🌨"
+	isolatedThundershowers  = "⛈"
+	notAvailable            = "🈚️"
+)
+
+// Compass is direction and degree
 func Compass() (map[float64]string, []float64) {
 	var sortedKeys []float64
 	direction := make(map[float64]string, 9)
@@ -27,6 +80,7 @@ func Compass() (map[float64]string, []float64) {
 	return direction, sortedKeys
 }
 
+// GuessDirection just a dumb method for get direction
 func GuessDirection(degree float64) float64 {
 	var slice []float64
 	_, sortedKeys := Compass()
@@ -40,6 +94,7 @@ func GuessDirection(degree float64) float64 {
 	return slice[0]
 }
 
+// CheckWindDirection is return wind direction string
 func CheckWindDirection(degree float64) string {
 	var result string
 	guessDirection := GuessDirection(degree)
@@ -60,55 +115,55 @@ func weatherEmoji(code int) (string, error) {
 	emojiMap := make(map[int]string, 48)
 	sortedKeys := make([]int, 48)
 
-	emojiMap[0] = "🌪"
-	emojiMap[1] = "💨"
-	emojiMap[2] = "💨"
-	emojiMap[3] = "⛈"
-	emojiMap[4] = "⛈"
-	emojiMap[5] = "🌨"
-	emojiMap[6] = "🌧"
-	emojiMap[7] = "🌨"
-	emojiMap[8] = "🌧"
-	emojiMap[9] = "🌧"
-	emojiMap[10] = "🌧"
-	emojiMap[11] = "🌧"
-	emojiMap[12] = "🌧"
-	emojiMap[13] = "🌨"
-	emojiMap[14] = "🌨"
-	emojiMap[15] = "🌨"
-	emojiMap[16] = "🌨"
-	emojiMap[17] = "🌨"
-	emojiMap[18] = "🌧"
-	emojiMap[19] = "🌫"
-	emojiMap[20] = "🌫"
-	emojiMap[21] = "🌫"
-	emojiMap[22] = "🌫"
-	emojiMap[23] = "💨"
-	emojiMap[24] = "💨"
-	emojiMap[25] = "❄️"
-	emojiMap[26] = "☁️"
-	emojiMap[27] = "☁️"
-	emojiMap[28] = "🌥"
-	emojiMap[29] = "☁️"
-	emojiMap[30] = "⛅️"
-	emojiMap[31] = "🌙"
-	emojiMap[32] = "☀️"
-	emojiMap[33] = "🌙"
-	emojiMap[34] = "🌤"
-	emojiMap[35] = "🌧"
-	emojiMap[36] = "☀️"
-	emojiMap[37] = "⛈"
-	emojiMap[38] = "⛈"
-	emojiMap[39] = "⛈"
-	emojiMap[40] = "🌧"
-	emojiMap[41] = "🌨"
-	emojiMap[42] = "🌨"
-	emojiMap[43] = "🌨"
-	emojiMap[44] = "⛅️"
-	emojiMap[45] = "⛈"
-	emojiMap[46] = "🌨"
-	emojiMap[47] = "⛈"
-	emojiMap[3200] = "🈚️"
+	emojiMap[0] = tornado
+	emojiMap[1] = tropicalStorm
+	emojiMap[2] = hurricane
+	emojiMap[3] = severeThunderstorms
+	emojiMap[4] = thunderstorms
+	emojiMap[5] = mixedRainAndSnow
+	emojiMap[6] = mixedRainAndSleet
+	emojiMap[7] = mixedSnowAndSleet
+	emojiMap[8] = freezingDrizzle
+	emojiMap[9] = drizzle
+	emojiMap[10] = freezingRain
+	emojiMap[11] = showers
+	emojiMap[12] = showerss
+	emojiMap[13] = snowFlurries
+	emojiMap[14] = lightSnowShowers
+	emojiMap[15] = blowingSnow
+	emojiMap[16] = snow
+	emojiMap[17] = hail
+	emojiMap[18] = sleet
+	emojiMap[19] = dust
+	emojiMap[20] = foggy
+	emojiMap[21] = haze
+	emojiMap[22] = smoky
+	emojiMap[23] = blustery
+	emojiMap[24] = windy
+	emojiMap[25] = cody
+	emojiMap[26] = cloudy
+	emojiMap[27] = mostlyCloudyNight
+	emojiMap[28] = mostlyCloudyDay
+	emojiMap[29] = partlyCloudyNight
+	emojiMap[30] = partlyCloudyDay
+	emojiMap[31] = clearNight
+	emojiMap[32] = sunny
+	emojiMap[33] = fairNight
+	emojiMap[34] = fairDay
+	emojiMap[35] = mixedRainAndHail
+	emojiMap[36] = hot
+	emojiMap[37] = isolatedThunderstorms
+	emojiMap[38] = scatteredThunderstorms
+	emojiMap[39] = scatteredThunderstormss
+	emojiMap[40] = scatteredShowers
+	emojiMap[41] = heavySnow
+	emojiMap[42] = scatteredSnowShowers
+	emojiMap[43] = heavySnows
+	emojiMap[44] = partlyCloudy
+	emojiMap[45] = thundershowers
+	emojiMap[46] = snowShowers
+	emojiMap[47] = isolatedThundershowers
+	emojiMap[3200] = notAvailable
 
 	for k := range emojiMap {
 		sortedKeys = append(sortedKeys, k)

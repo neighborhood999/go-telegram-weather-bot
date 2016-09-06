@@ -12,10 +12,12 @@ import (
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
+// CityName is search city
 type CityName struct {
 	Name string
 }
 
+// WeatherInfo is Bot API response information for user
 type WeatherInfo struct {
 	City          string
 	Time          string
@@ -29,6 +31,7 @@ type WeatherInfo struct {
 	Link          string
 }
 
+// ReadBotToken is read bot token(token.json)
 func ReadBotToken(path string) (string, error) {
 	var data map[string]string
 
@@ -45,6 +48,7 @@ func ReadBotToken(path string) (string, error) {
 	return data["token"], nil
 }
 
+// BuildURL is generate API URL
 func BuildURL(param interface{}) (urlParsed string) {
 	URL, _ := url.Parse("https://query.yahooapis.com/v1/public/yql")
 
@@ -73,7 +77,8 @@ func BuildURL(param interface{}) (urlParsed string) {
 	return urlParsed
 }
 
-func HttpGet(weatherURL string) ([]byte, error) {
+// HTTPGet is
+func HTTPGet(weatherURL string) ([]byte, error) {
 	response, err := http.Get(weatherURL)
 
 	if err != nil {
@@ -91,6 +96,7 @@ func HttpGet(weatherURL string) ([]byte, error) {
 	return body, nil
 }
 
+// HandleQueryResult is handle HTTPGet body
 func (w *WeatherInfo) HandleQueryResult(body []byte) error {
 	json, err := simplejson.NewJson(body)
 
@@ -133,6 +139,7 @@ func (w *WeatherInfo) HandleQueryResult(body []byte) error {
 	return nil
 }
 
+// ResponseWeatherText is response for user's template
 func (w *WeatherInfo) ResponseWeatherText(weatherInfo *WeatherInfo) string {
 	emoji, _ := weatherEmoji(weatherInfo.Status)
 	weatherMessage := `🚩 *` + weatherInfo.City + `*

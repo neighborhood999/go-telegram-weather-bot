@@ -53,7 +53,7 @@ func TestBuildURL(t *testing.T) {
 	}
 }
 
-func TestHttpGet(t *testing.T) {
+func TestHTTPGet(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello Go"))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -61,11 +61,11 @@ func TestHttpGet(t *testing.T) {
 
 	defer ts.Close()
 
-	if _, err := HttpGet(ts.URL); err != nil {
+	if _, err := HTTPGet(ts.URL); err != nil {
 		t.Log(err)
 	}
 
-	if _, err := HttpGet(""); err != nil {
+	if _, err := HTTPGet(""); err != nil {
 		t.Log(err)
 	}
 }
