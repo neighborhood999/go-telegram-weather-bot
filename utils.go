@@ -185,9 +185,9 @@ func (f *Forest) HandleQueryForest(forestArray []interface{}) string {
 		emoji, _ := weatherEmoji(f.code)
 
 		text := `
-		📅 *` + f.date + ` - ` + f.day + `
-		🔰 最低溫和最高溫 ➡️ ` + f.low + `°C - ` + f.high + `°C
-		🌀天氣狀態 ➡️ ` + emoji + `
+📅 *` + f.date + ` - ` + f.day + `
+🔰 最低溫和最高溫 ➡️ ` + f.low + `°C - ` + f.high + `°C
+🌀天氣狀態 ➡️ ` + emoji + `
 		` + "\n"
 		forestResponse = forestResponse + text
 	}
