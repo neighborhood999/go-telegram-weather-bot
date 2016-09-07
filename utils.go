@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strconv"
 	"time"
 
@@ -29,6 +30,15 @@ type WeatherInfo struct {
 	Sunrise       string
 	Sunset        string
 	Link          string
+}
+
+// Forest :
+type Forest struct {
+	code int
+	day  string
+	low  string
+	high string
+	date string
 }
 
 // ReadBotToken is read bot token(token.json)
@@ -97,11 +107,11 @@ func HTTPGet(weatherURL string) ([]byte, error) {
 }
 
 // HandleQueryResult is handle HTTPGet body
-func (w *WeatherInfo) HandleQueryResult(body []byte) error {
+func (w *WeatherInfo) HandleQueryResult(body []byte) ([]interface{}, error) {
 	json, err := simplejson.NewJson(body)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	city, _ := json.Get("query").Get("results").Get("channel").Get("location").Get("city").String()
@@ -113,13 +123,14 @@ func (w *WeatherInfo) HandleQueryResult(body []byte) error {
 	sunrise, _ := json.Get("query").Get("results").Get("channel").Get("astronomy").Get("sunrise").String()
 	sunset, _ := json.Get("query").Get("results").Get("channel").Get("astronomy").Get("sunset").String()
 	link, _ := json.Get("query").Get("results").Get("channel").Get("link").String()
+	forest, _ := json.Get("query").Get("results").Get("channel").Get("item").Get("forecast").Array()
 
 	if _, err := strconv.ParseFloat(direction, 64); err != nil {
-		return err
+		return nil, err
 	}
 
 	if _, err := strconv.Atoi(status); err != nil {
-		return err
+		return nil, err
 	}
 
 	windDirection, _ := strconv.ParseFloat(direction, 64)
@@ -136,7 +147,7 @@ func (w *WeatherInfo) HandleQueryResult(body []byte) error {
 	w.Sunset = sunset
 	w.Link = link
 
-	return nil
+	return forest, nil
 }
 
 // ResponseWeatherText is response for user's template
@@ -158,4 +169,28 @@ func (w *WeatherInfo) ResponseWeatherText(weatherInfo *WeatherInfo) string {
 `
 
 	return weatherMessage
+}
+
+// HandleQueryForest :
+func (f *Forest) HandleQueryForest(forestArray []interface{}) string {
+	var forestResponse string
+
+	for _, v := range forestArray[0:8] {
+		s := reflect.ValueOf(v).Interface().(map[string]interface{})
+		f.code, _ = strconv.Atoi(s["code"].(string))
+		f.high = s["high"].(string)
+		f.low = s["low"].(string)
+		f.date = s["date"].(string)
+		f.day = s["day"].(string)
+		emoji, _ := weatherEmoji(f.code)
+
+		text := `
+		📅 *` + f.date + ` - ` + f.day + `
+		🔰 最低溫和最高溫 ➡️ ` + f.low + `°C - ` + f.high + `°C
+		🌀天氣狀態 ➡️ ` + emoji + `
+		` + "\n"
+		forestResponse = forestResponse + text
+	}
+
+	return forestResponse
 }
