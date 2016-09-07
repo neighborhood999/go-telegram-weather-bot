@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/bitly/go-simplejson"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
@@ -70,7 +71,7 @@ func TestHTTPGet(t *testing.T) {
 	}
 }
 
-func TestHandlyeQueryResult(t *testing.T) {
+func TestHandleQueryResult(t *testing.T) {
 	json, err := ioutil.ReadFile("./tests/mockResponse.json")
 
 	if err != nil {
@@ -92,7 +93,7 @@ func TestHandlyeQueryResult(t *testing.T) {
 		t.Log(err)
 		t.Fail()
 	}
-	if handleError := w.HandleQueryResult(txt); handleError != nil {
+	if _, handleError := w.HandleQueryResult(txt); handleError != nil {
 		t.Log(handleError)
 	}
 
@@ -102,7 +103,7 @@ func TestHandlyeQueryResult(t *testing.T) {
 		t.Log(err)
 		t.Fail()
 	}
-	if JSONError := w.HandleQueryResult(invalidJSON); JSONError != nil {
+	if _, JSONError := w.HandleQueryResult(invalidJSON); JSONError != nil {
 		t.Log(JSONError)
 	}
 }
@@ -126,6 +127,31 @@ func TestResponseWeatherText(t *testing.T) {
 
 	if reflect.TypeOf(result).Kind() != reflect.String {
 		t.Log("Response Fail")
+		t.Fail()
+	}
+}
+
+func TestHandleQueryForest(t *testing.T) {
+	f := new(Forest)
+	mock, err := ioutil.ReadFile("./tests/mockResponse.json")
+
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
+
+	json, err := simplejson.NewJson(mock)
+
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
+
+	forestInfo, _ := json.Get("query").Get("results").Get("channel").Get("item").Get("forecast").Array()
+	expected := f.HandleQueryForest(forestInfo)
+
+	if reflect.TypeOf(expected).Kind() != reflect.String {
+		t.Log("Must response string")
 		t.Fail()
 	}
 }
