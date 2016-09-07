@@ -13,6 +13,9 @@ const Markdown = tgbotapi.ModeMarkdown
 
 var cityName = &CityName{}
 var weatherInfo = &WeatherInfo{}
+var forest = &Forest{}
+var callbackConfing = &tgbotapi.CallbackConfig{}
+var responseMessage string
 
 func main() {
 	token, err := ReadBotToken("./token.json")
@@ -41,7 +44,42 @@ func main() {
 	}
 
 	for update := range updates {
-		if update.Message == nil {
+		if update.Message == nil || update.CallbackQuery != nil {
+			switch update.CallbackQuery.Data {
+			case "today":
+				inlineButton := tgbotapi.NewInlineKeyboardButtonData("未來一週天氣", "forest")
+				inlineKeyboard := []tgbotapi.InlineKeyboardButton{
+					inlineButton,
+				}
+				inlineKeyboardMarkup := tgbotapi.NewInlineKeyboardMarkup(inlineKeyboard)
+
+				e := tgbotapi.NewEditMessageText(
+					update.CallbackQuery.Message.Chat.ID,
+					update.CallbackQuery.Message.MessageID,
+					responseMessage,
+				)
+				e.BaseEdit.ReplyMarkup = &inlineKeyboardMarkup
+				e.ParseMode = Markdown
+
+				bot.Send(e)
+			case "forest":
+				inlineButton := tgbotapi.NewInlineKeyboardButtonData("今日天氣狀況", "today")
+				inlineKeyboard := []tgbotapi.InlineKeyboardButton{
+					inlineButton,
+				}
+				inlineKeyboardMarkup := tgbotapi.NewInlineKeyboardMarkup(inlineKeyboard)
+
+				e := tgbotapi.NewEditMessageText(
+					update.CallbackQuery.Message.Chat.ID,
+					update.CallbackQuery.Message.MessageID,
+					callbackConfing.Text,
+				)
+				e.BaseEdit.ReplyMarkup = &inlineKeyboardMarkup
+				e.ParseMode = Markdown
+
+				bot.Send(e)
+			}
+
 			continue
 		}
 
@@ -71,10 +109,21 @@ func main() {
 				log.Fatal(err)
 			}
 
-			weatherInfo.HandleQueryResult(body)
-			responseMessage := weatherInfo.ResponseWeatherText(weatherInfo)
+			forestInfo, _ := weatherInfo.HandleQueryResult(body)
+			forestResponse := forest.HandleQueryForest(forestInfo)
+
+			responseMessage = weatherInfo.ResponseWeatherText(weatherInfo)
+
+			callbackConfing.Text = forestResponse
+
+			inlineButton := tgbotapi.NewInlineKeyboardButtonData("未來一週天氣", "forest")
+			inlineKeyboard := []tgbotapi.InlineKeyboardButton{
+				inlineButton,
+			}
+			inlineKeyboardMarkup := tgbotapi.NewInlineKeyboardMarkup(inlineKeyboard)
 
 			response := tgbotapi.NewMessage(update.Message.Chat.ID, responseMessage)
+			response.BaseChat.ReplyMarkup = inlineKeyboardMarkup
 			response.ParseMode = Markdown
 
 			bot.Send(response)
@@ -98,10 +147,21 @@ func main() {
 					log.Fatal(err)
 				}
 
-				weatherInfo.HandleQueryResult(body)
-				responseMessage := weatherInfo.ResponseWeatherText(weatherInfo)
+				forestInfo, _ := weatherInfo.HandleQueryResult(body)
+				forestResponse := forest.HandleQueryForest(forestInfo)
+
+				responseMessage = weatherInfo.ResponseWeatherText(weatherInfo)
+
+				callbackConfing.Text = forestResponse
+
+				inlineButton := tgbotapi.NewInlineKeyboardButtonData("未來一週天氣", "forest")
+				inlineKeyboard := []tgbotapi.InlineKeyboardButton{
+					inlineButton,
+				}
+				inlineKeyboardMarkup := tgbotapi.NewInlineKeyboardMarkup(inlineKeyboard)
 
 				response := tgbotapi.NewMessage(update.Message.Chat.ID, responseMessage)
+				response.BaseChat.ReplyMarkup = inlineKeyboardMarkup
 				response.ParseMode = Markdown
 
 				bot.Send(response)
