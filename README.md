@@ -47,7 +47,8 @@ $ go build
 
 - [Telegram Bot 開發起手式](http://neighborhood999.github.io/2016/07/19/Develop-telegram-bot/)
 - [Telegram Weather Bot _(Nodejs)_](https://github.com/neighborhood999/telegram-weather-bot)
+- [CafeNomad Telegram Bot](https://github.com/neighborhood999/telegram-cafe-nomad)
 
 ## LICENSE
 
-[Peng Jie](https://github.com/neighborhood999) © MIT
+MIT © [Peng Jie](https://github.com/neighborhood999)
